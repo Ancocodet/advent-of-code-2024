@@ -19,24 +19,19 @@ public class Day2 implements IAdventDay {
             boolean increasing = levels[0] < levels[1];
             boolean safe = true;
 
-            for (int i = 1; i < levels.length - 1; i++) {
+            for (int i = 0; i < levels.length - 1; i++) {
                 int diff = levels[i + 1] - levels[i];
-                if (!increasing) {
-                    diff = levels[i] - levels[i + 1];
-                }
-
-                if (diff < 1 || diff > 3) {
+                if (increasing && diff < 1 || diff > 3) {
                     safe = false;
                     break;
                 }
-
-                if((increasing && levels[i] > levels[i + 1]) || (!increasing && levels[i] < levels[i + 1])) {
+                if (!increasing && (diff > -1 || diff < -3)) {
                     safe = false;
                     break;
                 }
             }
 
-            if(safe){
+            if (safe) {
                 sum++;
             }
         }
@@ -46,7 +41,64 @@ public class Day2 implements IAdventDay {
 
     @Override
     public String part2(IInputHelper inputHelper) {
-        return null;
+        int sum = 0;
+
+        for (int[] levels : parseReports(inputHelper)) {
+            boolean increasing = levels[0] < levels[1];
+            boolean safe = true;
+
+            for (int i = 0; i < levels.length - 1; i++) {
+                int diff = levels[i + 1] - levels[i];
+                if (increasing && diff < 1 || diff > 3) {
+                    safe = false;
+                    break;
+                }
+                if (!increasing && (diff > -1 || diff < -3)) {
+                    safe = false;
+                    break;
+                }
+            }
+
+            if (safe) {
+                sum++;
+            } else if (tryWithDampers(levels)) {
+                sum++;
+            }
+        }
+
+        return sum + "";
+    }
+
+    private boolean tryWithDampers(int[] levels) {
+        for (int i = 0; i < levels.length; i++) {
+            int[] newLevels = new int[levels.length - 1];
+            int index = 0;
+            for (int j = 0; j < levels.length; j++) {
+                if (j != i) {
+                    newLevels[index++] = levels[j];
+                }
+            }
+
+            if (isSafe(newLevels)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isSafe(int[] levels){
+        boolean increasing = levels[0] < levels[1];
+        for (int i = 0; i < levels.length - 1; i++) {
+            int diff = levels[i + 1] - levels[i];
+            if (increasing && diff < 1 || diff > 3) {
+                return false;
+            }
+            if (!increasing && (diff > -1 || diff < -3)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<int[]> parseReports(IInputHelper inputHelper){
