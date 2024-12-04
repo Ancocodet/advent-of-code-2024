@@ -14,10 +14,6 @@ application {
 
 repositories {
     mavenCentral()
-    mavenCentral()
-    maven {
-        url = URI.create("https://repo.enonic.com/public/")
-    }
     maven {
         url = URI.create("https://maven.abstractolotl.de/snapshots/")
     }
@@ -39,7 +35,7 @@ dependencies {
     implementation("de.ancozockt:aoclib:3.1.0-SNAPSHOT")
     testImplementation("de.ancozockt:aoclib:3.1.0-SNAPSHOT")
 
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
