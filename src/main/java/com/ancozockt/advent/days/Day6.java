@@ -40,29 +40,39 @@ public class Day6 implements IAdventDay {
         Guard guard = lab.guard();
         Set<Cord> obstacles = lab.obstacles();
 
-        long width = lab.width;
-        long height = lab.height;
+        long width = lab.width();
+        long height = lab.height();
 
         if (guard == null) {
             return null;
         }
 
-        Set<Cord> touched = moveGuard(guard, obstacles, width, height);
-
         long count = 0;
-        for (Cord cord : touched) {
-            Set<Cord> newObstacles = new HashSet<>(obstacles);
-            newObstacles.add(cord);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Cord cord = new Cord(x, y);
 
-            if (isLooping(guard, newObstacles, cord, width, height)) {
-                count++;
+                if (cord.equals(guard.cord())) {
+                    continue;
+                }
+
+                if (obstacles.contains(cord)) {
+                    continue;
+                }
+
+                Set<Cord> newObstacles = new HashSet<>(obstacles);
+                newObstacles.add(cord);
+
+                if (isLooping(guard, newObstacles, cord, width, height)) {
+                    count++;
+                }
             }
         }
 
         return count + "";
     }
 
-    private boolean isLooping(Guard guard, Set<Cord> obstacles, Cord newBlocker, long width, long height) {
+    private boolean isLooping(Guard guard, Set<Cord> obstacles, Cord newObstacle, long width, long height) {
         Set<Guard> visited = new HashSet<>();
 
         Guard currentGuard = guard;
@@ -71,24 +81,20 @@ public class Day6 implements IAdventDay {
         long count = 0;
         while (guardCord.x() >= 0 && guardCord.x() < width
             && guardCord.y() >= 0 && guardCord.y() < height) {
-            if(!visited.add(currentGuard)) {
-                Cord newCord = guardCord.move(guard.direction());
-                if (newCord.equals(newBlocker)) {
-                    return true;
-                }
-            }
-
             Cord newCord = guardCord.move(guard.direction());
             if (obstacles.contains(newCord)) {
+                if (!visited.add(currentGuard) && newCord.equals(newObstacle)) {
+                    return true;
+                }
                 guard = guard.rotate();
                 newCord = guardCord.move(guard.direction());
             }
 
-            currentGuard = new Guard(newCord, guard.direction());
+            currentGuard = guard.move(newCord);
             guardCord = currentGuard.cord();
 
-            if(count++ > 10_000) {
-                break;
+            if (count++ > 10_000) {
+                return true;
             }
         }
 
@@ -145,6 +151,10 @@ public class Day6 implements IAdventDay {
                long height) { }
 
     record Guard(Cord cord, Direction direction) {
+
+        public Guard move(Cord cord) {
+            return new Guard(cord, direction);
+        }
 
         public Guard rotate() {
             return switch (direction) {
