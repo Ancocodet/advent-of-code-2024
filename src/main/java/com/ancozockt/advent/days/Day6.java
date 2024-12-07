@@ -5,13 +5,10 @@ import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
 import de.ancozockt.aoclib.interfaces.IInputHelper;
 
-import java.security.Guard;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@AInputData(day = 6, year = 2024)
+@AInputData(day = 6, year = 2024, skip = true)
 public class Day6 implements IAdventDay {
 
     @Override

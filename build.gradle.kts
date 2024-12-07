@@ -15,7 +15,7 @@ application {
 repositories {
     mavenCentral()
     maven {
-        url = URI.create("https://maven.abstractolotl.de/snapshots/")
+        url = URI.create("https://maven.abstractolotl.de/releases/")
     }
 }
 
@@ -32,8 +32,8 @@ dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
-    implementation("de.ancozockt:aoclib:3.1.0-SNAPSHOT")
-    testImplementation("de.ancozockt:aoclib:3.1.0-SNAPSHOT")
+    implementation("de.ancozockt:aoclib:4.0.1")
+    testImplementation("de.ancozockt:aoclib:4.0.1")
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")

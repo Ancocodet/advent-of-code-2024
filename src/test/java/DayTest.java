@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -51,7 +52,7 @@ public class DayTest {
             }else{
                 System.out.println("Part-1: x (could not be tested)");
             }
-        }catch (NullPointerException exception){ }
+        } catch (NullPointerException ignored){ }
 
 
         try{
@@ -76,15 +77,9 @@ public class DayTest {
 
     static Stream<IAdventDay> getDays(){
         Reflections reflections = new Reflections("com.ancozockt.advent.days");
-        return reflections.getTypesAnnotatedWith(AInputData.class).stream().sorted((o1, o2) -> {
-            if(o1.getAnnotation(AInputData.class).day() > o2.getAnnotation(AInputData.class).day()){
-                return 1;
-            }else if(o1.getAnnotation(AInputData.class).day() < o2.getAnnotation(AInputData.class).day()){
-                return -1;
-            }else{
-                return 0;
-            }
-        }).map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
+        return reflections.getTypesAnnotatedWith(AInputData.class).stream()
+                .sorted(Comparator.comparingInt(o -> o.getAnnotation(AInputData.class).day()))
+                .map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
     }
 
     private String[] readOutputs(int day){
