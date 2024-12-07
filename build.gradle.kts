@@ -32,11 +32,14 @@ dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
-    implementation("de.ancozockt:aoclib:4.0.1")
-    testImplementation("de.ancozockt:aoclib:4.0.1")
+    implementation("de.ancozockt:aoclib:4.1.0")
+    testImplementation("de.ancozockt:aoclib:4.1.0")
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    implementation("ch.qos.logback:logback-classic:1.5.12")
+    testImplementation("ch.qos.logback:logback-classic:1.5.12")
 }
 
 tasks.test {

@@ -1,3 +1,4 @@
+import de.ancozockt.aoclib.ReflectionHelper;
 import de.ancozockt.aoclib.annotations.AInputData;
 import de.ancozockt.aoclib.interfaces.IAdventDay;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-@Slf4j
 public class DayTest {
 
     @ParameterizedTest
@@ -76,10 +76,9 @@ public class DayTest {
     }
 
     static Stream<IAdventDay> getDays(){
-        Reflections reflections = new Reflections("com.ancozockt.advent.days");
-        return reflections.getTypesAnnotatedWith(AInputData.class).stream()
-                .sorted(Comparator.comparingInt(o -> o.getAnnotation(AInputData.class).day()))
-                .map(aClass -> (IAdventDay) createNewInstanceOfClass(aClass));
+        return ReflectionHelper.getAdventDays("com.ancozockt.advent.days").stream()
+                .sorted(Comparator.comparingInt(o -> o.inputData().day()))
+                .map(ReflectionHelper.AdventDayExecution::adventDay);
     }
 
     private String[] readOutputs(int day){
@@ -105,14 +104,6 @@ public class DayTest {
         }
 
         return new BufferedReader(new InputStreamReader(ioStream));
-    }
-
-    private static <T> T createNewInstanceOfClass(Class<T> someClass) {
-        try {
-            return someClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            return null;
-        }
     }
 
 }
