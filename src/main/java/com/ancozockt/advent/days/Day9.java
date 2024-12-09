@@ -11,15 +11,14 @@ import java.util.Deque;
 public class Day9 implements IAdventDay {
 
     private static final char EMPTY = '.';
-    private char[] diskMap;
-    private char[] disk;
-    private int lastBlockIndex = 0;
-    private Deque<Integer> diskDeque = new ArrayDeque<>();
 
     @Override
     public String part1(IInputHelper inputHelper) {
-        diskMap = inputHelper.getInputAsString().trim().toCharArray();
-        disk = new char[diskMap.length * 9];
+        char[] diskMap = inputHelper.getInputAsString().trim().toCharArray();
+        char[] disk = new char[diskMap.length * 9];
+
+        int lastBlockIndex = 0;
+        Deque<Integer> diskDeque = new ArrayDeque<>();
 
         int fileId = 0;
         for(int i = 0; i < diskMap.length; i++) {
