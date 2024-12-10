@@ -15,26 +15,22 @@ public class Day9 implements IAdventDay {
     @Override
     public String part1(IInputHelper inputHelper) {
         char[] diskMap = inputHelper.getInputAsString().trim().toCharArray();
-        char[] disk = new char[diskMap.length * 9];
-
-        int lastBlockIndex = 0;
         Deque<Integer> diskDeque = new ArrayDeque<>();
 
         int fileId = 0;
+        int lastBlockIndex = 0;
+
         for(int i = 0; i < diskMap.length; i++) {
             int blockSize = Character.getNumericValue(diskMap[i]);
-            for (int blockIndex = lastBlockIndex; blockIndex < lastBlockIndex + blockSize; blockIndex++) {
-                if (i % 2 == 0) {
-                    disk[blockIndex] = Character.forDigit(fileId, 10);
+            for(int blockIndex = lastBlockIndex; blockIndex < lastBlockIndex + blockSize; blockIndex++) {
+                if(i % 2 == 0) {
                     diskDeque.add(fileId);
                 } else {
-                    disk[blockIndex] = EMPTY;
                     diskDeque.add(-1);
                 }
             }
-
             lastBlockIndex += blockSize;
-            if (i % 2 == 0) {
+            if(i % 2 == 0) {
                 fileId++;
             }
         }
@@ -44,7 +40,7 @@ public class Day9 implements IAdventDay {
         while(!diskDeque.isEmpty()) {
             int current = diskDeque.pollFirst();
             if(current != -1) {
-                result += index * current;
+                result += (long) index * current;
                 index++;
             } else if(diskDeque.peekLast() != null){
                 diskDeque.addFirst(diskDeque.pollLast());
