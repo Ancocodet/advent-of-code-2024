@@ -31,6 +31,7 @@ dependencies {
 
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("org.apache.commons:commons-lang3:3.12.0")
+    implementation("org.apache.commons:commons-collections4:4.5.0-M2")
 
     implementation("de.ancozockt:aoclib:4.1.0")
     testImplementation("de.ancozockt:aoclib:4.1.0")

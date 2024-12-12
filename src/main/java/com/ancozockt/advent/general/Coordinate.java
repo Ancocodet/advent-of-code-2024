@@ -14,8 +14,13 @@ public class Coordinate {
     public final static List<UnaryOperator<Coordinate>> horizontal = List.of(Coordinate::transformLeft, Coordinate::transformRight);
     public final static List<UnaryOperator<Coordinate>> vertical = List.of(Coordinate::transformUp, Coordinate::transformDown);
 
-    public final int x;
-    public final int y;
+    public int x;
+    public int y;
+
+    public Coordinate(Coordinate coordinate) {
+        this.x = coordinate.x;
+        this.y = coordinate.y;
+    }
 
     public List<Coordinate> neighbours() {
         return List.of(
@@ -25,6 +30,12 @@ public class Coordinate {
             transform(this, right())
         );
     }
+
+    public void transform(Coordinate direction) {
+        this.x += direction.x;
+        this.y += direction.y;
+    }
+
 
     Coordinate transformUp() {
         return transform(this, up());
@@ -61,6 +72,17 @@ public class Coordinate {
     public static Coordinate transform(Coordinate cord, Coordinate direction) {
         return new Coordinate(cord.x + direction.x,
                         cord.y + direction.y);
+    }
+
+    public static Coordinate substract(Coordinate leftOperand, Coordinate rightOperand) {
+        int x = leftOperand.x - rightOperand.x;
+        int y = leftOperand.y - rightOperand.y;
+        return new Coordinate(x,y);
+    }
+
+    public static Coordinate direction(Coordinate p, Coordinate q) {
+
+        return Coordinate.substract(p, q);
     }
 
 }
