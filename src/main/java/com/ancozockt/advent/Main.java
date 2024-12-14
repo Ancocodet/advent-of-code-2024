@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
 
 @Slf4j
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
             folder.mkdirs();
         }
 
-        ReflectionHelper.getAdventDays("com.ancozockt.advent.days").forEach(execution -> {
+        sortedDays().forEach(execution -> {
             AInputData inputData = execution.inputData();
             IAdventDay adventDay = execution.adventDay();
 
@@ -39,6 +41,14 @@ public class Main {
                     adventDay.part1(new InputHelper(inputData)),
                     adventDay.part2(new InputHelper(inputData)));
         });
+    }
+
+    private static List<ReflectionHelper.AdventDayExecution> sortedDays(){
+        List<ReflectionHelper.AdventDayExecution> executions = ReflectionHelper.getAdventDays("com.ancozockt.advent.days");
+
+        executions.sort(Comparator.comparingInt(execution -> execution.inputData().day()));
+
+        return executions;
     }
 
     private static void saveOutput(int day, String part1, String part2) {
