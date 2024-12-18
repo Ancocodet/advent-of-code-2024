@@ -22,6 +22,11 @@ public class Coordinate {
         this.y = coordinate.y;
     }
 
+    public static Coordinate parse(String input) {
+        String[] parts = input.split(",");
+        return new Coordinate(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+    }
+
     public List<Coordinate> neighbours() {
         return List.of(
             transform(this, up()),
