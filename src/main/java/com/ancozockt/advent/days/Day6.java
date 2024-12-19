@@ -8,7 +8,7 @@ import de.ancozockt.aoclib.interfaces.IInputHelper;
 import java.util.HashSet;
 import java.util.Set;
 
-@AInputData(day = 6, year = 2024, skip = true)
+@AInputData(day = 6, year = 2024)
 public class Day6 implements IAdventDay {
 
     @Override
@@ -37,6 +37,8 @@ public class Day6 implements IAdventDay {
         Guard guard = lab.guard();
         Set<Cord> obstacles = lab.obstacles();
 
+        System.out.println("Guard: " + guard);
+
         long width = lab.width();
         long height = lab.height();
 
@@ -45,8 +47,8 @@ public class Day6 implements IAdventDay {
         }
 
         long count = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y <= height; y++) {
+            for (int x = 0; x <= width; x++) {
                 Cord cord = new Cord(x, y);
 
                 if (cord.equals(guard.cord())) {
@@ -60,7 +62,7 @@ public class Day6 implements IAdventDay {
                 Set<Cord> newObstacles = new HashSet<>(obstacles);
                 newObstacles.add(cord);
 
-                if (isLooping(guard, newObstacles, cord, width, height)) {
+                if (isLooping(guard, newObstacles, width, height)) {
                     count++;
                 }
             }
@@ -69,28 +71,29 @@ public class Day6 implements IAdventDay {
         return count + "";
     }
 
-    private boolean isLooping(Guard guard, Set<Cord> obstacles, Cord newObstacle, long width, long height) {
+    private boolean isLooping(Guard guard, Set<Cord> obstacles, long width, long height) {
         Set<Guard> visited = new HashSet<>();
 
         Guard currentGuard = guard;
-        Cord guardCord = currentGuard.cord();
+        visited.add(currentGuard);
 
-        long count = 0;
-        while (guardCord.x() >= 0 && guardCord.x() < width
-            && guardCord.y() >= 0 && guardCord.y() < height) {
-            Cord newCord = guardCord.move(guard.direction());
-            if (obstacles.contains(newCord)) {
-                if (!visited.add(currentGuard) && newCord.equals(newObstacle)) {
-                    return true;
-                }
-                guard = guard.rotate();
-                newCord = guardCord.move(guard.direction());
+        long moveThreshold = 100_000;
+        // I want to check if the guard is moving in a loop
+        while (currentGuard.x() >= 0 && currentGuard.x() < width
+               && currentGuard.y() >= 0 && currentGuard.y() < height) {
+            Cord newCord = currentGuard.simulateMove();
+            while (obstacles.contains(newCord)) {
+                currentGuard = currentGuard.rotate();
+                newCord = currentGuard.simulateMove();
             }
 
-            currentGuard = guard.move(newCord);
-            guardCord = currentGuard.cord();
+            currentGuard = currentGuard.move(newCord);
+            if (!visited.add(currentGuard)) {
+                return true;
+            }
 
-            if (count++ > 10_000) {
+            moveThreshold--;
+            if (moveThreshold <= 0) {
                 return true;
             }
         }
@@ -149,6 +152,10 @@ public class Day6 implements IAdventDay {
 
     record Guard(Cord cord, Direction direction) {
 
+        public Cord simulateMove() {
+            return cord.move(direction);
+        }
+
         public Guard move(Cord cord) {
             return new Guard(cord, direction);
         }
@@ -160,6 +167,14 @@ public class Day6 implements IAdventDay {
                 case LEFT -> new Guard(cord, Direction.UP);
                 case RIGHT -> new Guard(cord, Direction.DOWN);
             };
+        }
+
+        public int x() {
+            return cord.x();
+        }
+
+        public int y() {
+            return cord.y();
         }
 
     }
