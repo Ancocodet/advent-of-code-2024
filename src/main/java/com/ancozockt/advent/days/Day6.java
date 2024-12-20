@@ -37,8 +37,6 @@ public class Day6 implements IAdventDay {
         Guard guard = lab.guard();
         Set<Cord> obstacles = lab.obstacles();
 
-        System.out.println("Guard: " + guard);
-
         long width = lab.width();
         long height = lab.height();
 
