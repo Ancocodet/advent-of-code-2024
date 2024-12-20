@@ -41,6 +41,9 @@ public class Coordinate {
         this.y += direction.y;
     }
 
+    public int distance(Coordinate other) {
+        return Math.abs(this.x - other.x) + Math.abs(this.y - other.y);
+    }
 
     Coordinate transformUp() {
         return transform(this, up());
@@ -86,7 +89,6 @@ public class Coordinate {
     }
 
     public static Coordinate direction(Coordinate p, Coordinate q) {
-
         return Coordinate.substract(p, q);
     }
 
