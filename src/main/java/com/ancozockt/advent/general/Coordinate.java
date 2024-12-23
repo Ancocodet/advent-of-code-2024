@@ -36,6 +36,10 @@ public class Coordinate {
         );
     }
 
+    public Coordinate add(Coordinate other) {
+        return new Coordinate(this.x + other.x, this.y + other.y);
+    }
+
     public void transform(Coordinate direction) {
         this.x += direction.x;
         this.y += direction.y;
