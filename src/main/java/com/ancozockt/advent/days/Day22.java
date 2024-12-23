@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@AInputData(day = 24, year = 2024)
+@AInputData(day = 22, year = 2024)
 public class Day22 implements IAdventDay {
 
     private final long PRUNE_MODULO = 16_777_216L;
